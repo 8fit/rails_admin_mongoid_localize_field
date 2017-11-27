@@ -1,4 +1,6 @@
 = form.fields_for field.translations_field do |localized_field|
   - I18n.available_locales.each do |locale|
     = localized_field.label locale
-    = localized_field.send field_type, locale, html_attributes.reverse_merge({ :value => field.value.try(:[], locale.to_s) })
+    - disabled = locale != I18n.default_locale
+    - value = field.value.try(:[], locale.to_s)
+    = localized_field.send field_type, locale, html_attributes.reverse_merge({ value: value, disabled: disabled })
