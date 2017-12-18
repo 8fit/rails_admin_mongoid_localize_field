@@ -7,7 +7,7 @@
   = form.fields_for field.translations_field do |localized_field|
     - I18n.available_locales.each do |locale|
       .fields.tab-pane{ style: 'padding:5px; margin: 0;', id: "#{locale}_#{uuid}", class: [( 'active' if locale == I18n.locale ), uuid] }
-        - disabled = locale != I18n.default_locale
+        - disabled = field.abstract_model.model_name.constantize.try(:translation_uneditable?) && (locale != I18n.default_locale)
         - value = field.value.try(:[], locale.to_s)
         = localized_field.send field_type, locale, html_attributes.reverse_merge({ value: value, disabled: disabled })
 
